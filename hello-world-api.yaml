@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hello-world-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: my-hello-world-api
+    repoURL: https://storage.googleapis.com/guigui0812-helm-repository
+    targetRevision: 1.0.0
+    helm:
+      releaseName: my-hello-world-api
+      values: |
+        image:
+          name: "site-traiteur"
+          registry: "gorinje"
+          version: "latest"
+        replicas: 2
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: dev
+  syncPolicy:
+    syncOptions: 
+    - CreateNamespace=true
